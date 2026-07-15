@@ -1,44 +1,28 @@
-"""
-AI Powered Debt Relief & Financial Recovery Platform - FastAPI backend.
-
-Endpoints cover:
-- Loan CRUD (add/view borrower loan accounts)
-- Financial health analysis (debt stress, settlement recommendation)
-- AI-powered negotiation letter generation (Google Gemini)
-- Negotiation history retrieval
-- Dashboard summary
-"""
-
 from typing import List
 
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
+import os
 
 import models
 import schemas
 from database import engine, get_db
 from ai_service import analyze_financial_health, generate_negotiation_letter
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import HTMLResponse
-import os
 
-# Add this to serve the frontend
-frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
-if os.path.exists(frontend_dist):
-    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
-    
-    @app.get("/{full_path:path}")
-    async def serve_react_app(full_path: str):
-        return HTMLResponse(open(os.path.join(frontend_dist, "index.html")).read())
-models.Base.metadata.create_all(bind=engine)
-
+# 1. CREATE THE APP FIRST!
 app = FastAPI(
     title="AI Powered Debt Relief & Financial Recovery Platform",
     description="API for loan management, financial health analysis, and AI negotiation support.",
     version="1.0.0",
 )
 
+# 2. Create database tables
+models.Base.metadata.create_all(bind=engine)
+
+# 3. Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -47,6 +31,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# 4. Mount frontend (AFTER app is created)
+frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
+if os.path.exists(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
+    
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        return HTMLResponse(open(os.path.join(frontend_dist, "index.html")).read())
 
 @app.get("/")
 def root():
