@@ -106,3 +106,4 @@ the FastAPI backend on port 8000.
 - Export negotiation letters as PDF (see `pdf` generation libraries).
 - Add charts for stress score trends over time.
 - Deploy backend (Render/Railway) and frontend (Vercel/Netlify).
+Demo link :https://drive.google.com/file/d/121qyqLAamxsH2x-gY9pvh4Luvj1Ccxfu/view?usp=sharing
