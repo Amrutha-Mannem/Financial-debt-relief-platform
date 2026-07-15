@@ -19,7 +19,18 @@ import models
 import schemas
 from database import engine, get_db
 from ai_service import analyze_financial_health, generate_negotiation_letter
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse
+import os
 
+# Add this to serve the frontend
+frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
+if os.path.exists(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
+    
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        return HTMLResponse(open(os.path.join(frontend_dist, "index.html")).read())
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
