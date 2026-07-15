@@ -31,14 +31,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 4. Mount frontend (AFTER app is created)
-frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
-if os.path.exists(frontend_dist):
-    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
-    
-    @app.get("/{full_path:path}")
-    async def serve_react_app(full_path: str):
-        return HTMLResponse(open(os.path.join(frontend_dist, "index.html")).read())
 
 @app.get("/")
 def root():
@@ -157,3 +149,11 @@ def get_dashboard(db: Session = Depends(get_db)):
         "loan_count": len(loans),
         "loans": loans,
     }
+# Move this to the VERY END of main.py, after all API routes
+frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
+if os.path.exists(frontend_dist):
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
+    
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        return HTMLResponse(open(os.path.join(frontend_dist, "index.html")).read())
