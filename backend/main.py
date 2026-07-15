@@ -11,14 +11,25 @@ import models
 import schemas
 from database import engine, get_db
 from ai_service import analyze_financial_health, generate_negotiation_letter
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
+# Test database connection on startup
+try:
+    from database import engine
+    logger.info("Database engine created successfully")
+except Exception as e:
+    logger.error(f"Database connection failed: {e}")
 # 1. CREATE THE APP FIRST!
 app = FastAPI(
     title="AI Powered Debt Relief & Financial Recovery Platform",
     description="API for loan management, financial health analysis, and AI negotiation support.",
     version="1.0.0",
 )
-
+@app.get("/test")
+def test_route():
+    return {"message": "API is working!"}
 # 2. Create database tables
 models.Base.metadata.create_all(bind=engine)
 
@@ -152,8 +163,8 @@ def get_dashboard(db: Session = Depends(get_db)):
 # Move this to the VERY END of main.py, after all API routes
 frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
 if os.path.exists(frontend_dist):
-    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
+    app.mount("/app", StaticFiles(directory=frontend_dist, html=True), name="frontend")
     
-    @app.get("/{full_path:path}")
-    async def serve_react_app(full_path: str):
-        return HTMLResponse(open(os.path.join(frontend_dist, "index.html")).read())
+    #@app.get("/app/{full_path:path}")
+    #async def serve_react_app(full_path: str):
+     #   return HTMLResponse(open(os.path.join(frontend_dist, "index.html")).read())
