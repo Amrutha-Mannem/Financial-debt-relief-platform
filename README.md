@@ -107,3 +107,8 @@ the FastAPI backend on port 8000.
 - Add charts for stress score trends over time.
 - Deploy backend (Render/Railway) and frontend (Vercel/Netlify).
 Demo link :https://drive.google.com/file/d/121qyqLAamxsH2x-gY9pvh4Luvj1Ccxfu/view?usp=sharing
+Web Page Screenshort:<img width="1600" height="905" alt="image" src="https://github.com/user-attachments/assets/b43460d1-3a29-4418-aff1-c1f55538be79" />
+
+<img width="1143" height="822" alt="image" src="https://github.com/user-attachments/assets/6d184631-49f9-465f-8deb-494704767904" /><img width="1116" height="956" alt="image" src="https://github.com/user-attachments/assets/3d4bc5db-d92f-4dc9-a833-5436c376f074" /><img width="1101" height="863" alt="image" src="https://github.com/user-attachments/assets/e7d7c574-9a2d-4f2b-ba39-390c7aeb87e8" />
+
+
