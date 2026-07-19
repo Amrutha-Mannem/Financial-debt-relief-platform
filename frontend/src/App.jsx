@@ -1,4 +1,4 @@
-import { Routes, Route, NavLink } from 'react-router-dom'
+import { Routes, Route, NavLink, Navigate } from 'react-router-dom'
 import Dashboard from './components/Dashboard.jsx'
 import LoanForm from './components/LoanForm.jsx'
 import LoanDetail from './components/LoanDetail.jsx'
@@ -21,7 +21,8 @@ export default function App() {
       </aside>
       <main className="main-area">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/add-loan" element={<LoanForm />} />
           <Route path="/loans/:id" element={<LoanDetail />} />
         </Routes>
